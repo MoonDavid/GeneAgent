@@ -42,7 +42,7 @@ GeneAgent is a first-of-kinds language agent built upon GPT-4 to automatically i
      ```
    5. Install the required packages one by one with the command:
       ```
-      python install {package} == {version}
+      pip install {package}=={version}
       ```
       
 ## Download 
@@ -102,4 +102,5 @@ This tool shows the results of research conducted in the Computational Biology B
 
 # Zenodo identifier
 [DOI: 10.5281/zenodo.15008591](https://zenodo.org/records/15008591)
+
 
