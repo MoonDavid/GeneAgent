@@ -3,12 +3,7 @@ import time
 import pandas as pd
 from datetime import datetime
 
-import openai
-## Replace with your own OpenAI model and key
-openai.api_type = "azure"
-openai.api_base = "***************"
-openai.api_version = "*****************"
-openai.api_key = "**************************" 
+from config import chat_completion
 
 from worker import AgentPhD
 
@@ -106,8 +101,7 @@ if __name__ == "__main__":
             {"role":"system", "content":system},
             {"role":"user", "content":prompt}
         ]
-        summary = openai.ChatCompletion.create(
-			engine="gpt-4o",
+        summary = chat_completion(
 			messages=messages,
 			temperature=0,
 			)

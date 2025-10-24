@@ -28,9 +28,14 @@ GeneAgent is a first-of-kinds language agent built upon GPT-4 to automatically i
 
 # Configuration:
 ## Installation 
-1. Apply an OpenAI Key from the Azure OpenAI service to activate the access of LLMs, e.g., GPT-4.
+1. **LLM Backend Setup** - GeneAgent now supports multiple LLM backends:
+   - **Azure OpenAI** (default): Apply an OpenAI Key from the Azure OpenAI service
+   - **Ollama**: Use local models on your machine
+   - **LM Studio**: Use local models with a GUI interface
    
-   OpenAI Documentation: https://learn.microsoft.com/en-us/azure/ai-services/
+   For Azure OpenAI Documentation: https://learn.microsoft.com/en-us/azure/ai-services/
+   
+   For local model setup, see **[LLM_BACKEND_CONFIG.md](LLM_BACKEND_CONFIG.md)** for detailed instructions.
 
  2. Create a virtual environment on your GPU terminate by using the anaconda command:
     ```
@@ -51,19 +56,52 @@ GeneAgent is a first-of-kinds language agent built upon GPT-4 to automatically i
     ```
     git@github.com:ncbi-nlp/GeneAgent.git
     ```
-## Replace the openai key
+## Configure LLM Backend
+### Option 1: Using Environment Variables (Recommended)
+Set the backend using environment variables:
+```bash
+# For Ollama (local models)
+export LLM_BACKEND=ollama
+export OLLAMA_MODEL=llama3.1:70b
+
+# For LM Studio (local models)
+export LLM_BACKEND=lmstudio
+
+# For Azure OpenAI (default)
+export LLM_BACKEND=azure
+```
+
+### Option 2: Edit config.py
+1. Open `config.py` in the GeneAgent directory
+2. Change `LLM_BACKEND` to your preferred backend ("azure", "ollama", or "lmstudio")
+3. For Azure OpenAI, update the API credentials:
+   ```python
+   AZURE_API_BASE = "YOUR_OWN_OPENAI_BASE_SETTING"
+   AZURE_API_VERSION = "YOUR_OWN_OPENAI_API_VERSION"
+   AZURE_API_KEY = "YOUR_OWN_OPENAI_KEY"
+   AZURE_ENGINE = "gpt-4o"
+   ```
+4. For Ollama or LM Studio, update the respective settings in `config.py`
+
+### Test Your Configuration
+Run the test script to verify your setup:
+```bash
+python test_config.py
+```
+
+For detailed setup instructions for local models (Ollama/LM Studio), see **[LLM_BACKEND_CONFIG.md](LLM_BACKEND_CONFIG.md)**.
+
+## Legacy Configuration (Azure OpenAI only)
 1. Go to the created directory of GeneAgent
    ```
    cd {directory}
    ```
- 2. Open the **main_cascade.py** and the **worker.py** respectively to replace the **openai.api_key** with your own API Key as well as other required parameters **openai.api_base** and **openai.api_version**.
-	```
- 	openai.api_key=YOUR_OWN_OPENAI_KEY
-	openai.api_base=YOUR_OWN_OPENAI_BASE_SETTING
-	openai.api_version=YOUR_OWN_OPENAI_API_VERSION
+ 2. Open **config.py** to replace the Azure OpenAI credentials with your own API Key and other required parameters.
+	```python
+ 	AZURE_API_KEY = "YOUR_OWN_OPENAI_KEY"
+	AZURE_API_BASE = "YOUR_OWN_OPENAI_BASE_SETTING"
+	AZURE_API_VERSION = "YOUR_OWN_OPENAI_API_VERSION"
  	```
-  >[!TIP]
-   >If you need to run the variants of GeneAgent, such as chain-of-thought **main_CoT.py** and the summarization for multiple biological terms **main_summary.py**, please also make a key replacement accordingly.
 
 # Execute
 ## Running

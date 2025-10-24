@@ -3,12 +3,7 @@ import time
 import re
 import pandas as pd
 
-import openai
-## Replace with your own OpenAI model and key
-openai.api_type = "azure"
-openai.api_base = "***************"
-openai.api_version = "*****************"
-openai.api_key = "**************************" 
+from config import chat_completion 
 
 
 ## topic verification
@@ -34,8 +29,7 @@ def topic_verification(genes, process_name, agentphd):
         {"role":"system", "content":system_verify},
         {"role":"user", "content":prompt_topic}
     ]
-    claims = openai.ChatCompletion.create(
-        engine="gpt-4o",
+    claims = chat_completion(
         messages=message,
         temperature=0.0,
         )
@@ -64,8 +58,7 @@ def topic_verification(genes, process_name, agentphd):
     message.append(
         {"role":"user", "content":f"I have finished the verification for the process name, here is the verification report:{verification}\nPlease replace the process name with the most significant function of gene set.\nPlease start a message with \"Topic:\" and only return the brief revised name."}
     )
-    updated = openai.ChatCompletion.create(
-        engine="gpt-4o",
+    updated = chat_completion(
         messages=message,
         temperature=0.0,
         )

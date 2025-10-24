@@ -1,9 +1,3 @@
-import openai
-openai.api_type = "azure"
-openai.api_base = "***************"
-openai.api_version = "***************"
-openai.api_key = "**********************"
-
 import os
 import time
 import json
@@ -16,6 +10,8 @@ from datetime import datetime
 import tiktoken
 MAX_TOKENS = 127900
 encoding = tiktoken.encoding_for_model("gpt-4")
+
+from config import chat_completion
 
 from apis.get_complex_for_gene_set import get_complex_for_gene_set, get_complex_for_gene_set_doc 
 from apis.get_disease_for_single_gene import get_disease_for_single_gene, get_disease_for_single_gene_doc
@@ -70,8 +66,7 @@ class AgentPhD:
 			loop += 1
 			# logger.info(f"Input@{loop}\n" +  json.dumps(messages, indent=4))
 			time.sleep(1)
-			completion = openai.ChatCompletion.create(
-				engine="gpt-4o",
+			completion = chat_completion(
 				messages=message_verification,
 				functions=self.function_docs,
 				temperature=0,

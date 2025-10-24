@@ -5,12 +5,7 @@ from turtle import up
 import pandas as pd
 from tqdm import tqdm
 
-import openai
-openai.api_type = "azure"
-openai.api_base = "******************"
-openai.api_version = "*******************"
-openai.api_key = "*************************" 
-
+from config import chat_completion
 from worker import AgentPhD
 
 
@@ -122,14 +117,13 @@ def GeneAgent(ID, genes):
     try:
         prompt_baseline = baseline(genes)
         first_step = prompt_baseline + system
-        token_baseline = encoding.encode(first_step)
-        print(f"=====The prompt tokens input to the generation step is {len(token_baseline)}=====\n")
+        # token_baseline = encoding.encode(first_step)
+        # print(f"=====The prompt tokens input to the generation step is {len(token_baseline)}=====\n")
         messages = [
             {"role":"system", "content":system},
             {"role":"user", "content":prompt_baseline}
         ]
-        summary = openai.ChatCompletion.create(
-            engine="gpt-4o",
+        summary = chat_completion(
             messages=messages,
             temperature=0,
             )
@@ -149,8 +143,7 @@ def GeneAgent(ID, genes):
             {"role":"system", "content":system_verify},
             {"role":"user", "content":prompt_topic}
         ]
-        claims_topic = openai.ChatCompletion.create(
-            engine="gpt-4o",
+        claims_topic = chat_completion(
             messages=message_topic,
             temperature=0,
             )
@@ -180,8 +173,7 @@ def GeneAgent(ID, genes):
         messages.append(
             {"role":"user", "content": modification_prompt}
             )
-        updated_topic = openai.ChatCompletion.create(
-            engine="gpt-4o",
+        updated_topic = chat_completion(
             messages=messages,
             temperature=0,
         )
@@ -199,8 +191,7 @@ def GeneAgent(ID, genes):
             {"role":"system", "content":system_verify},
             {"role":"user", "content":prompt_analysis}
         ]
-        claims_analysis = openai.ChatCompletion.create(
-            engine="gpt-4o",
+        claims_analysis = chat_completion(
             messages=analysis_message,
             temperature=0,
             )
@@ -231,8 +222,7 @@ def GeneAgent(ID, genes):
         messages.append(
             {"role":"assistant", "content":summarization_prompt }
         )
-        updated = openai.ChatCompletion.create(
-            engine="gpt-4o",
+        updated = chat_completion(
             messages=messages,
             temperature=0,
             )
